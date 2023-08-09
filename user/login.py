@@ -96,7 +96,7 @@ async def user_login(event):
             async with jdbot.conversation(sender, timeout=100) as conv:
                 msg = await conv.send_message('请输入手机号：\n例如：+8618888888888')
                 phone = await conv.get_response()
-                await user.send_code_request(phone.raw_text, force_sms=True)
+                await user.send_code_request(phone.raw_text)
                 msg = await conv.send_message('请输入手机验证码:\n例如`code12345code`\n两边的**code**必须有！')
                 code = await conv.get_response()
                 await user.sign_in(phone.raw_text, code.raw_text.replace('code', ''))
