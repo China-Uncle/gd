@@ -15,17 +15,16 @@ from ..bot.utils import press_event, V4
 from ..diy.utils import read, write
 
 
-@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'(export\s)?\w*=(".*"|\'.*\')'))
+@jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'(export\s)?\w*=(.*)'))
 async def myaddexport(event):
     try:
         SENDER = event.sender_id
         messages = event.raw_text.split("\n")
         for message in messages:
             if "export " not in message:
-                continue
-            kv = message.replace("export ", "")
-            kname = kv.split("=")[0]
-            vname = re.findall(r"(\".*\"|'.*')", kv)[0][1:-1]
+                continue 
+            kname = re.match(r"export\s?(\w*)=(.*)", message).group(1)
+            vname = re.match(r"export\s?(\w*)=(.*)", message).group(2)
             btns = [Button.inline("是", data='yes'), Button.inline("否", data='cancel')]
             async with jdbot.conversation(SENDER, timeout=60) as conv:
                 msg = await conv.send_message(f"我检测到你需要添加一个环境变量\n键名：{kname}\n值名：{vname}\n请问是这样吗？", buttons=btns)

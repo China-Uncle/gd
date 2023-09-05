@@ -133,3 +133,4 @@ jdCookie.js
 .gitignore
 /jk_script/sendNotify.js
 /jk_script/jdCookie.js
+.history/
